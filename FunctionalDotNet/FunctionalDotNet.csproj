@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>0.1</Version>
+    <Authors>thelegendofando</Authors>
+    <Description>Functional Extensions For CSharp</Description>
+    <Company>thelegendofando</Company>
+    <PackageProjectUrl>https://github.com/thelegendofando/FunctionalDotNet</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/thelegendofando/FunctionalDotNet</RepositoryUrl>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702;1998</NoWarn>
+  </PropertyGroup>
+
+</Project>
