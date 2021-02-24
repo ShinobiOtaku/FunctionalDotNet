@@ -67,5 +67,17 @@ namespace FunctionalDotNet
 
         public static ResultComputation<T1, T2> Combine<T1, T2>(Result<T1> first, Result<T2> second) =>
             ResultComputation.Create(first, second);
+
+        public static ResultComputation<T1, T2, T3> Combine<T1, T2, T3>(Result<T1> first, Result<T2> second, Result<T3> third) =>
+            ResultComputation.Create(first, second, third);
+
+        public static ResultComputation<T1, T2, T3, T4> Combine<T1, T2, T3, T4>(Result<T1> first, Result<T2> second, Result<T3> third, Result<T4> forth) =>
+            ResultComputation.Create(first, second, third, forth);
+
+        public static ResultComputation<T1, T2, T3, T4, T5> Combine<T1, T2, T3, T4, T5>(Result<T1> first, Result<T2> second, Result<T3> third, Result<T4> forth, Result<T5> fifth) =>
+            ResultComputation.Create(first, second, third, forth, fifth);
+
+        public static ResultComputation<T1, T2, T3, T4, T5, T6> Combine<T1, T2, T3, T4, T5, T6>(Result<T1> first, Result<T2> second, Result<T3> third, Result<T4> forth, Result<T5> fifth, Result<T6> six) =>
+            ResultComputation.Create(first, second, third, forth, fifth, six);
     }
 }
