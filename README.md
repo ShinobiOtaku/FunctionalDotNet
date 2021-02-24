@@ -9,7 +9,7 @@ Inspired by FSharp and [Railway Oriented Programming](https://fsharpforfunandpro
 
 Available on [nuget](https://www.nuget.org/packages/FunctionalDotNet/)
 
-	PM> Install-Package CSharpFunctionalExtensions
+	PM> Install-Package FunctionalDotNet
 
 ## Result
 
