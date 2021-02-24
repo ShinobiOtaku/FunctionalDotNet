@@ -132,6 +132,38 @@ namespace FunctionalDotNet
             _inner.MapAsync(t => f(t.Item1, t.Item2, t.Item3, t.Item4, t.Item5));
     }
 
+    public class ResultComputation<T1, T2, T3, T4, T5, T6> : Result
+    {
+        private readonly Result<(T1, T2, T3, T4, T5, T6)> _inner;
+
+        internal ResultComputation(Result<(T1, T2, T3, T4, T5, T6)> inner) : base(inner.IsSuccess, inner.Errors) =>
+            _inner = inner;
+
+        public Result Bind(Func<T1, T2, T3, T4, T5, T6, Result> f) =>
+            BindAsync((fst, snd, trd, frth, fifth, six) => Task.FromResult(f(fst, snd, trd, frth, fifth, six))).Result;
+
+        public Task<Result> BindAsync(Func<T1, T2, T3, T4, T5, T6, Task<Result>> f) =>
+            _inner.BindAsync(t => f(t.Item1, t.Item2, t.Item3, t.Item4, t.Item5, t.Item6));
+
+        public Result<T7> Bind<T7>(Func<T1, T2, T3, T4, T5, T6, Result<T7>> f) =>
+            BindAsync((fst, snd, trd, frth, fifth, six) => Task.FromResult(f(fst, snd, trd, frth, fifth, six))).Result;
+
+        public Task<Result<T7>> BindAsync<T7>(Func<T1, T2, T3, T4, T5, T6, Task<Result<T7>>> f) =>
+            _inner.BindAsync(t => f(t.Item1, t.Item2, t.Item3, t.Item4, t.Item5, t.Item6));
+
+        public Result<T7> Map<T7>(Func<T1, T2, T3, T4, T5, T6, T7> f) =>
+            MapAsync((fst, snd, trd, frth, fifth, six) => Task.FromResult(f(fst, snd, trd, frth, fifth, six))).Result;
+
+        public Task<Result<T7>> MapAsync<T7>(Func<T1, T2, T3, T4, T5, T6, Task<T7>> f) =>
+            _inner.MapAsync(t => f(t.Item1, t.Item2, t.Item3, t.Item4, t.Item5, t.Item6));
+
+        public Result Map(Action<T1, T2, T3, T4, T5, T6> f) =>
+            MapAsync(async (fst, snd, trd, frth, fifth, six) => f(fst, snd, trd, frth, fifth, six)).Result;
+
+        public Task<Result> MapAsync(Func<T1, T2, T3, T4, T5, T6, Task> f) =>
+            _inner.MapAsync(t => f(t.Item1, t.Item2, t.Item3, t.Item4, t.Item5, t.Item6));
+    }
+
     public static class ResultComputation
     {
         private static Result<(T1, T2)> Combine<T1, T2>(Result<T1> first, Result<T2> second)
@@ -185,5 +217,19 @@ namespace FunctionalDotNet
 
         public static ResultComputation<T1, T2, T3, T4, T5> Create<T1, T2, T3, T4, T5>(Result<T1> first, Result<T2> second, Result<T3> third, Result<T4> forth, Result<T5> fifth)
             => new ResultComputation<T1, T2, T3, T4, T5>(Combine(first, second, third, forth, fifth));
+
+        //6
+        private static Result<(T1, T2, T3, T4, T5, T6)> Combine<T1, T2, T3, T4, T5, T6>(Result<T1> first, Result<T2> second, Result<T3> third, Result<T4> forth, Result<T5> fifth, Result<T6> six)
+        {
+            var results = new Result[] { first, second, third };
+            if (results.All(x => x.IsSuccess))
+                return Result.Success((first.ItemOrDefault, second.ItemOrDefault, third.ItemOrDefault, forth.ItemOrDefault, fifth.ItemOrDefault, six.ItemOrDefault));
+
+            var errors = results.SelectMany(x => x.Errors);
+            return Result.Failure<(T1, T2, T3, T4, T5, T6)>(errors.ToArray());
+        }
+
+        public static ResultComputation<T1, T2, T3, T4, T5, T6> Create<T1, T2, T3, T4, T5, T6>(Result<T1> first, Result<T2> second, Result<T3> third, Result<T4> forth, Result<T5> fifth, Result<T6> six)
+            => new ResultComputation<T1, T2, T3, T4, T5, T6>(Combine(first, second, third, forth, fifth, six));
     }
 }
