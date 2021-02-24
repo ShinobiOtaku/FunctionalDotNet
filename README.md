@@ -7,7 +7,7 @@ Inspired by FSharp and [Railway Oriented Programming](https://fsharpforfunandpro
 
 ## Installation
 
-Available on [nuget](https://www.nuget.org/packages/CSharpFunctionalExtensions/)
+Available on [nuget](https://www.nuget.org/packages/FunctionalDotNet/)
 
 	PM> Install-Package CSharpFunctionalExtensions
 
