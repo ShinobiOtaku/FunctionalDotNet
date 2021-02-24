@@ -3,16 +3,26 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>0.1</Version>
+    <Version>0.1.1</Version>
     <Authors>thelegendofando</Authors>
     <Description>Functional Extensions For CSharp</Description>
-    <Company>thelegendofando</Company>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+	<PackageTags>C# Functional Result Monad</PackageTags>
+	<PackageLicense>https://github.com/thelegendofando/FunctionalDotNet/blob/master/LICENSE</PackageLicense>
     <PackageProjectUrl>https://github.com/thelegendofando/FunctionalDotNet</PackageProjectUrl>
     <RepositoryUrl>https://github.com/thelegendofando/FunctionalDotNet</RepositoryUrl>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <NoWarn>1701;1702;1998</NoWarn>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>

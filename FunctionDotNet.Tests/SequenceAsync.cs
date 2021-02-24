@@ -9,9 +9,9 @@ namespace FunctionalDotNet.Tests
         [Test]
         public async Task ErrorsAreCombined()
         {
-            var subject = await Result.Result.SequenceAsync(
-                Task.FromResult(Result.Result.Failure("one")),
-                Task.FromResult(Result.Result.Failure("two")));
+            var subject = await Result.SequenceAsync(
+                Task.FromResult(Result.Failure("one")),
+                Task.FromResult(Result.Failure("two")));
 
             Assert.AreEqual(new[] { "one", "two" }, subject.Errors);
         }
@@ -19,9 +19,9 @@ namespace FunctionalDotNet.Tests
         [Test]
         public async Task CanSequenceAsync()
         {
-            var result = await Result.Result.SequenceAsync(
-                Task.FromResult(Result.Result.Success()),
-                Task.FromResult(Result.Result.Success()));
+            var result = await Result.SequenceAsync(
+                Task.FromResult(Result.Success()),
+                Task.FromResult(Result.Success()));
 
             Assert.AreEqual(true, result.IsSuccess);
         }

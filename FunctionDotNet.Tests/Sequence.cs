@@ -8,9 +8,9 @@ namespace FunctionalDotNet.Tests
         [Test]
         public void ErrorsAreCombined()
         {
-            var subject = Result.Result.Sequence(
-                Result.Result.Failure("one"),
-                Result.Result.Failure("two"));
+            var subject = Result.Sequence(
+                Result.Failure("one"),
+                Result.Failure("two"));
 
             Assert.AreEqual(new[] { "one", "two" }, subject.Errors);
         }
@@ -18,7 +18,7 @@ namespace FunctionalDotNet.Tests
         [Test]
         public void CanSequence()
         {
-            var result = Result.Result.Sequence(Result.Result.Success(), Result.Result.Success());
+            var result = Result.Sequence(Result.Success(), Result.Success());
             Assert.AreEqual(true, result.IsSuccess);
         }
     }

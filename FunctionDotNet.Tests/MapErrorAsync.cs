@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using FunctionalDotNet.Result;
 using FunctionalDotNet.Tests.Helpers;
 using NUnit.Framework;
 
@@ -9,9 +8,9 @@ namespace FunctionalDotNet.Tests
     [TestFixture]
     public class MapErrorAsync
     {
-        private readonly Result.Result _subject;
+        private readonly Result _subject;
 
-        public MapErrorAsync() => _subject = Result.Result.Failure("error");
+        public MapErrorAsync() => _subject = Result.Failure("error");
 
         [Test]
         public async Task CanMapErrorUsingAsyncFunction()

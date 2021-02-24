@@ -1,5 +1,4 @@
-﻿using FunctionalDotNet.Result;
-using FunctionalDotNet.Tests.Helpers;
+﻿using FunctionalDotNet.Tests.Helpers;
 using NUnit.Framework;
 
 namespace FunctionalDotNet.Tests
@@ -9,7 +8,7 @@ namespace FunctionalDotNet.Tests
     {
         private readonly Result<int> _subject;
 
-        public Map() => _subject = Result.Result.Success(1);
+        public Map() => _subject = Result.Success(1);
 
         [Test]
         public void CanMapToAnotherType()

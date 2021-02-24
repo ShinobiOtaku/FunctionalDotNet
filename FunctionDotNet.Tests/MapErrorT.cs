@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using FunctionalDotNet.Result;
 using FunctionalDotNet.Tests.Helpers;
 using NUnit.Framework;
 
@@ -10,7 +9,7 @@ namespace FunctionalDotNet.Tests
     {
         private readonly Result<int> _subject;
 
-        public MapErrorT() => _subject = Result.Result.Failure<int>("error");
+        public MapErrorT() => _subject = Result.Failure<int>("error");
 
         [Test]
         public void CanMapError()

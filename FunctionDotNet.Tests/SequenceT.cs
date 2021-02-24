@@ -1,5 +1,4 @@
-﻿using FunctionalDotNet.Result;
-using FunctionalDotNet.Tests.Helpers;
+﻿using FunctionalDotNet.Tests.Helpers;
 using NUnit.Framework;
 
 namespace FunctionalDotNet.Tests
@@ -10,9 +9,9 @@ namespace FunctionalDotNet.Tests
         [Test]
         public void ErrorsAreCombined()
         {
-            var subject = Result.Result.Sequence(
-                Result.Result.Failure<int>("one"),
-                Result.Result.Failure<int>("two"));
+            var subject = Result.Sequence(
+                Result.Failure<int>("one"),
+                Result.Failure<int>("two"));
 
             Assert.AreEqual(new[] { "one", "two" }, subject.Errors);
         }
@@ -20,8 +19,8 @@ namespace FunctionalDotNet.Tests
         [Test]
         public void CanSequence()
         {
-            var result = Result.Result
-                .Sequence(Result.Result.Success(1), Result.Result.Success(2))
+            var result = Result
+                .Sequence(Result.Success(1), Result.Success(2))
                 .Map(Calculator.Sum);
 
             Assert.AreEqual(3, result.ItemOrDefault);

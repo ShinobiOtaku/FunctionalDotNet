@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace FunctionalDotNet.Result
+namespace FunctionalDotNet
 {
     public static class ResultMapErrorExtensions
     {

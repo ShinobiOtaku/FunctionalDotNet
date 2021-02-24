@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace FunctionalDotNet.Result
+namespace FunctionalDotNet
 {
     public static class AsyncResultSequenceExtensions
     {

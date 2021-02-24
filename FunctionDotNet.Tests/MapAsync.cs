@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using FunctionalDotNet.Result;
 using FunctionalDotNet.Tests.Helpers;
 using NUnit.Framework;
 
@@ -10,7 +9,7 @@ namespace FunctionalDotNet.Tests
     {
         private readonly Result<int> _subject;
 
-        public MapAsync() => _subject = Result.Result.Success(1);
+        public MapAsync() => _subject = Result.Success(1);
         
         [Test]
         public async Task CanMapUsingAsyncFunction()

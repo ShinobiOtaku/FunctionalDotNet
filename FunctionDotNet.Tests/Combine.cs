@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using FunctionalDotNet.Result;
 using FunctionalDotNet.Tests.Helpers;
 using NUnit.Framework;
 
@@ -12,17 +11,17 @@ namespace FunctionalDotNet.Tests
 
         public Combine()
         {
-            _subject = Result.Result.Combine(
-                Result.Result.Success(1),
-                Result.Result.Success(1));
+            _subject = Result.Combine(
+                Result.Success(1),
+                Result.Success(1));
         }
 
         [Test]
         public void ErrorsAreCombined()
         {
-            var subject = Result.Result.Combine(
-                Result.Result.Failure<int>("one"),
-                Result.Result.Failure<int>("two"));
+            var subject = Result.Combine(
+                Result.Failure<int>("one"),
+                Result.Failure<int>("two"));
 
             Assert.AreEqual(new [] { "one", "two"}, subject.Errors);
         }
