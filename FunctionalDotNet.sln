@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FunctionalDotNet", "FunctionalDotNet\FunctionalDotNet.csproj", "{C2128681-2EDC-40C9-997D-83EEDD67568A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FunctionalDotNet.Tests", "FunctionDotNet.Tests\FunctionalDotNet.Tests.csproj", "{1A2D5639-FEEB-4A0A-93CA-25659B89395E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FunctionalDotNet.Tests", "FunctionalDotNet.Tests\FunctionalDotNet.Tests.csproj", "{1A2D5639-FEEB-4A0A-93CA-25659B89395E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{72B23C99-4765-43E0-98F3-AA15B807364E}"
 	ProjectSection(SolutionItems) = preProject

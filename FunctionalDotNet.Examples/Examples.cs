@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -64,15 +63,6 @@ namespace FunctionalDotNet.Examples
                 numbersToDivide.Select(i => Calculator.TryDivide(10, i));
 
             IResult<IEnumerable<int>> combined = results.Sequence();
-        }
-
-        public static void Lift()
-        {
-            IResult<Func<int, int>> addTwo = Result
-                .Lift<int,int>(Calculator.AddOne)
-                .Map(Calculator.AddOne);
-
-
         }
     }
 }
