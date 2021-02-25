@@ -6,7 +6,7 @@ namespace FunctionalDotNet
     public static class ResultMapErrorExtensions
     {
         // Change error message(s)
-        public static Result MapError(this Result source, Func<string, string> f)
+        public static IResult MapError(this IResult source, Func<string, string> f)
         {
             if (!source.IsSuccess)
             {
@@ -17,7 +17,7 @@ namespace FunctionalDotNet
         }
 
         // Change error message(s)
-        public static Result<T> MapError<T>(this Result<T> source, Func<string, string> f)
+        public static IResult<T> MapError<T>(this IResult<T> source, Func<string, string> f)
         {
             if (!source.IsSuccess)
             {

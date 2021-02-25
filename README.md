@@ -35,7 +35,7 @@ Chaining functions
 ```csharp
 var value = Result.Success(1);
 
-Result<int> four = value
+IResult<int> four = value
     .Map(Calculator.AddOne)
     .Map(Calculator.Square);
 
@@ -47,7 +47,7 @@ Chaining async functions
 ```csharp
 var value = Result.Success(1);
 
-Result<int> four = await value
+IResult<int> four = await value
     .Map(Calculator.AddOne)
     .MapAsync(Calculator.SquareAsync);
 
@@ -60,7 +60,7 @@ Combining results
 var value1 = Result.Success(1);
 var value2 = Result.Success(2);
 
-Result<int> three = Result
+IResult<int> three = Result
     .Combine(value1, value2)
     .Map((one, two) => Calculator.Add(one, two));
 ```
@@ -70,8 +70,8 @@ Sequencing results
 ```csharp
 var numbersToDivide = new [] {2, 1, 0};
 
-IEnumerable<Result<int>> results =
+IEnumerable<IResult<int>> results =
     numbersToDivide.Select(i => Calculator.TryDivide(10, i));
 
-Result<IEnumerable<int>> combined = results.Sequence();
+IResult<IEnumerable<int>> combined = results.Sequence();
 ```

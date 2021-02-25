@@ -7,7 +7,7 @@ namespace FunctionalDotNet.Tests
     [TestFixture]
     public class MapErrorT
     {
-        private readonly Result<int> _subject;
+        private readonly IResult<int> _subject;
 
         public MapErrorT() => _subject = Result.Failure<int>("error");
 

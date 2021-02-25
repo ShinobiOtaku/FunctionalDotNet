@@ -6,7 +6,7 @@ namespace FunctionalDotNet
     public static class ResultSequenceExtensions
     {
         // List<Result> -> Result<List>
-        public static Result Sequence(this IEnumerable<Result> results)
+        public static IResult Sequence(this IEnumerable<IResult> results)
         {
             if (results.Any(x => !x.IsSuccess))
             {
@@ -16,9 +16,9 @@ namespace FunctionalDotNet
 
             return Result.Success();
         }
-
+        
         // List<Result> -> Result<List>
-        public static Result<IEnumerable<T>> Sequence<T>(this IEnumerable<Result<T>> results)
+        public static IResult<IEnumerable<T>> Sequence<T>(this IEnumerable<IResult<T>> results)
         {
             if (results.Any(x => !x.IsSuccess))
             {

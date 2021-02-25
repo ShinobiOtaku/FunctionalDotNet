@@ -7,7 +7,7 @@ namespace FunctionalDotNet.Tests
     [TestFixture]
     public class MapAsync
     {
-        private readonly Result<int> _subject;
+        private readonly IResult<int> _subject;
 
         public MapAsync() => _subject = Result.Success(1);
         

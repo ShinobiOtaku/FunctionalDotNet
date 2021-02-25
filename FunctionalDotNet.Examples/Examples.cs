@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -6,7 +7,7 @@ namespace FunctionalDotNet.Examples
 {
     public static class Calculator
     {
-        public static Result<int> TryDivide(int a, int b) => Result.Success(a/b);
+        public static IResult<int> TryDivide(int a, int b) => Result.Success(a/b);
 
         public static int Add(int a, int b) => a + b;
         public static int AddOne(int a) => a + 1;
@@ -16,9 +17,9 @@ namespace FunctionalDotNet.Examples
     
     public static class CsvFile
     {
-        public static Result<string> TryReadLine() => Result.Success("1");
-        public static Result TryWriteLine(string line) => Result.Success();
-        public static async Task<Result> TryWriteLineAsync(string line) => Result.Success();
+        public static IResult<string> TryReadLine() => Result.Success("1");
+        public static IResult TryWriteLine(string line) => Result.Success();
+        public static async Task<IResult> TryWriteLineAsync(string line) => Result.Success();
     }
 
     public class FileContentsReporter
@@ -27,7 +28,7 @@ namespace FunctionalDotNet.Examples
         {
             var value = Result.Success(1);
 
-            Result<int> four = value
+            IResult<int> four = value
                 .Map(Calculator.AddOne)
                 .Map(Calculator.Square);
 
@@ -38,7 +39,7 @@ namespace FunctionalDotNet.Examples
         {
             var value = Result.Success(1);
 
-            Result<int> four = await value
+            IResult<int> four = await value
                 .Map(Calculator.AddOne)
                 .MapAsync(Calculator.SquareAsync);
 
@@ -50,7 +51,7 @@ namespace FunctionalDotNet.Examples
             var value1 = Result.Success(1);
             var value2 = Result.Success(2);
 
-            Result<int> three = Result
+            IResult<int> three = Result
                 .Combine(value1, value2)
                 .Map((one, two) => Calculator.Add(one, two));
         }
@@ -59,10 +60,19 @@ namespace FunctionalDotNet.Examples
         {
             var numbersToDivide = new [] {2, 1, 0};
 
-            IEnumerable<Result<int>> results =
+            IEnumerable<IResult<int>> results =
                 numbersToDivide.Select(i => Calculator.TryDivide(10, i));
 
-            Result<IEnumerable<int>> combined = results.Sequence();
+            IResult<IEnumerable<int>> combined = results.Sequence();
+        }
+
+        public static void Lift()
+        {
+            IResult<Func<int, int>> addTwo = Result
+                .Lift<int,int>(Calculator.AddOne)
+                .Map(Calculator.AddOne);
+
+
         }
     }
 }

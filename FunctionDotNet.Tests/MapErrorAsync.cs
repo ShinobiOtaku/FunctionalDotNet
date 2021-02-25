@@ -8,7 +8,7 @@ namespace FunctionalDotNet.Tests
     [TestFixture]
     public class MapErrorAsync
     {
-        private readonly Result _subject;
+        private readonly IResult _subject;
 
         public MapErrorAsync() => _subject = Result.Failure("error");
 

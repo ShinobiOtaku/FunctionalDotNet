@@ -5,29 +5,29 @@ namespace FunctionalDotNet
 {
     public static class AsyncResultSequenceExtensions
     {
-        // AsyncList<Result> -> AsyncResult<List>
-        public static async Task<Result> SequenceAsync(this Task<IEnumerable<Result>> results)
+        // AsyncList<IResult> -> AsyncResult<List>
+        public static async Task<IResult> SequenceAsync(this Task<IEnumerable<IResult>> results)
         {
             var result = await results;
             return result.Sequence();
         }
 
-        // AsyncList<Result> -> AsyncResult<List>
-        public static async Task<Result<IEnumerable<T>>> SequenceAsync<T>(this Task<IEnumerable<Result<T>>> results)
+        // AsyncList<IResult> -> AsyncResult<List>
+        public static async Task<IResult<IEnumerable<T>>> SequenceAsync<T>(this Task<IEnumerable<IResult<T>>> results)
         {
             var result = await results;
             return result.Sequence();
         }
 
         // List<AsyncResult> -> AsyncResult<List>
-        public static async Task<Result> SequenceAsync(this IEnumerable<Task<Result>> results)
+        public static async Task<IResult> SequenceAsync(this IEnumerable<Task<IResult>> results)
         {
             var result = await Task.WhenAll(results);
             return result.Sequence();
         }
 
         // List<AsyncResult> -> AsyncResult<List>
-        public static async Task<Result<IEnumerable<T>>> SequenceAsync<T>(this IEnumerable<Task<Result<T>>> results)
+        public static async Task<IResult<IEnumerable<T>>> SequenceAsync<T>(this IEnumerable<Task<IResult<T>>> results)
         {
             var result = await Task.WhenAll(results);
             return result.Sequence();
