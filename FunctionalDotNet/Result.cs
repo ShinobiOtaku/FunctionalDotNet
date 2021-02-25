@@ -20,6 +20,8 @@ namespace FunctionalDotNet
 
         public static IResult Failure(params string[] errors) =>
             new Result(false, errors);
+        public static IResult Failure(IEnumerable<string> errors) =>
+            Failure(errors.ToArray());
 
         public bool IsSuccess { get; }
 

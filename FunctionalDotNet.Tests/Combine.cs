@@ -11,7 +11,7 @@ namespace FunctionalDotNet.Tests
 
         public Combine()
         {
-            _subject = Result.Combine(
+            _subject = ResultComputation.Create(
                 Result.Success(1),
                 Result.Success(1));
         }

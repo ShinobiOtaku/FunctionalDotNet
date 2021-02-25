@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace FunctionalDotNet
@@ -10,7 +9,7 @@ namespace FunctionalDotNet
         public static async Task<IResult<T1>> MapAsync<T1, T2>(this IResult<T2> source, Func<T2, Task<T1>> f)
         {
             if (!source.IsSuccess)
-                return Result.Failure<T1>(source.Errors.ToArray());
+                return Result.Failure<T1>(source.Errors);
 
             var newItem = await f(source.ItemOrDefault);
             return Result.Success(newItem);
@@ -34,7 +33,7 @@ namespace FunctionalDotNet
         public static async Task<IResult> MapAsync<T1>(this IResult<T1> source, Func<T1, Task> f)
         {
             if (!source.IsSuccess)
-                return Result.Failure<T1>(source.Errors.ToArray());
+                return Result.Failure<T1>(source.Errors);
 
             await f(source.ItemOrDefault);
             return Result.Success();

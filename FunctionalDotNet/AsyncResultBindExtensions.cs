@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace FunctionalDotNet
@@ -10,7 +9,7 @@ namespace FunctionalDotNet
         public static async Task<IResult> BindAsync(this IResult source, Func<Task<IResult>> f)
         {
             if (!source.IsSuccess)
-                return Result.Failure(source.Errors.ToArray());
+                return Result.Failure(source.Errors);
 
             var result = f();
             return await result;
@@ -20,7 +19,7 @@ namespace FunctionalDotNet
         public static async Task<IResult> BindAsync<T1>(this IResult<T1> source, Func<T1, Task<IResult>> f)
         {
             if (!source.IsSuccess)
-                return Result.Failure(source.Errors.ToArray());
+                return Result.Failure(source.Errors);
 
             var result = f(source.ItemOrDefault);
             return await result;
@@ -37,7 +36,7 @@ namespace FunctionalDotNet
         public static async Task<IResult<T2>> BindAsync<T1, T2>(this IResult<T1> source, Func<T1, Task<IResult<T2>>> f)
         {
             if (!source.IsSuccess)
-                return Result.Failure<T2>(source.Errors.ToArray());
+                return Result.Failure<T2>(source.Errors);
 
             var result = f(source.ItemOrDefault);
             return await result;

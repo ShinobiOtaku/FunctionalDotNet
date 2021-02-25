@@ -11,7 +11,7 @@ namespace FunctionalDotNet
             if (results.Any(x => !x.IsSuccess))
             {
                 var errors = results.SelectMany(x => x.Errors);
-                return Result.Failure(errors.ToArray());
+                return Result.Failure(errors);
             }
 
             return Result.Success();
@@ -23,7 +23,7 @@ namespace FunctionalDotNet
             if (results.Any(x => !x.IsSuccess))
             {
                 var errors = results.SelectMany(x => x.Errors);
-                return Result.Failure<IEnumerable<T>>(errors.ToArray());
+                return Result.Failure<IEnumerable<T>>(errors);
             }
 
             var components = results.Select(x => x.ItemOrDefault);

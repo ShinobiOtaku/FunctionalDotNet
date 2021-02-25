@@ -2,58 +2,58 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static FunctionalDotNet.Result;
 
 namespace FunctionalDotNet
 {
     public class ResultComputation<T1, T2, T3, T4, T5> : IResult
     {
-        private readonly IResult<(T1, T2, T3, T4, T5)> _inner;
+        private readonly IResult<T1> _fst;
+        private readonly IResult<T2> _snd;
+        private readonly IResult<T3> _trd;
+        private readonly IResult<T4> _frth;
+        private readonly IResult<T5> _fifth;
 
-        internal ResultComputation(IResult<(T1, T2, T3, T4, T5)> inner) =>
-            _inner = inner;
+        internal ResultComputation(IResult<T1> fst, IResult<T2> snd, IResult<T3> trd, IResult<T4> frth, IResult<T5> fifth)
+        {
+            _fifth = fifth;
+            _fst = fst;
+            _snd = snd;
+            _trd = trd;
+            _frth = frth;
+        }
 
-        public bool IsSuccess => _inner.IsSuccess;
-        public IEnumerable<string> Errors => _inner.Errors;
+        public bool IsSuccess => _fst.IsSuccess && _snd.IsSuccess && _trd.IsSuccess && _frth.IsSuccess && _fifth.IsSuccess;
+        public IEnumerable<string> Errors => _fst.Errors.Concat(_snd.Errors).Concat(_trd.Errors).Concat(_frth.Errors).Concat(_fifth.Errors);
 
         public IResult Bind(Func<T1, T2, T3, T4, T5, IResult> f) =>
-            BindAsync((fst, snd, trd, frth, fifth) => Task.FromResult(f(fst, snd, trd, frth, fifth))).Result;
+            Lift(f).Apply(_fst).Apply(_snd).Apply(_trd).Apply(_frth).Apply(_fifth);
 
         public Task<IResult> BindAsync(Func<T1, T2, T3, T4, T5, Task<IResult>> f) =>
-            _inner.BindAsync(t => f(t.Item1, t.Item2, t.Item3, t.Item4, t.Item5));
+            Lift(f).Apply(_fst).Apply(_snd).Apply(_trd).Apply(_frth).Apply(_fifth).FlipAsync().IgnoreAsync();
 
         public IResult<T6> Bind<T6>(Func<T1, T2, T3, T4, T5, IResult<T6>> f) =>
-            BindAsync((fst, snd, trd, frth, fifth) => Task.FromResult(f(fst, snd, trd, frth, fifth))).Result;
+            Lift(f).Apply(_fst).Apply(_snd).Apply(_trd).Apply(_frth).Apply(_fifth);
 
         public Task<IResult<T6>> BindAsync<T6>(Func<T1, T2, T3, T4, T5, Task<IResult<T6>>> f) =>
-            _inner.BindAsync(t => f(t.Item1, t.Item2, t.Item3, t.Item4, t.Item5));
+            Lift(f).Apply(_fst).Apply(_snd).Apply(_trd).Apply(_frth).Apply(_fifth).FlipAsync().FlattenAsync();
 
         public IResult<T6> Map<T6>(Func<T1, T2, T3, T4, T5, T6> f) =>
-            MapAsync((fst, snd, trd, frth, fifth) => Task.FromResult(f(fst, snd, trd, frth, fifth))).Result;
+            Lift(f).Apply(_fst).Apply(_snd).Apply(_trd).Apply(_frth).Apply(_fifth);
 
         public Task<IResult<T6>> MapAsync<T6>(Func<T1, T2, T3, T4, T5, Task<T6>> f) =>
-            _inner.MapAsync(t => f(t.Item1, t.Item2, t.Item3, t.Item4, t.Item5));
+            Lift(f).Apply(_fst).Apply(_snd).Apply(_trd).Apply(_frth).Apply(_fifth).FlipAsync();
 
         public IResult Map(Action<T1, T2, T3, T4, T5> f) =>
-            MapAsync(async (fst, snd, trd, frth, fifth) => f(fst, snd, trd, frth, fifth)).Result;
+            Lift(f).Apply(_fst).Apply(_snd).Apply(_trd).Apply(_frth).Apply(_fifth);
 
         public Task<IResult> MapAsync(Func<T1, T2, T3, T4, T5, Task> f) =>
-            _inner.MapAsync(t => f(t.Item1, t.Item2, t.Item3, t.Item4, t.Item5));
+            Lift(f).Apply(_fst).Apply(_snd).Apply(_trd).Apply(_frth).Apply(_fifth).FlipAsync();
     }
 
     public static partial class ResultComputation
     {
-        //5
-        private static IResult<(T1, T2, T3, T4, T5)> Combine<T1, T2, T3, T4, T5>(IResult<T1> first, IResult<T2> second, IResult<T3> third, IResult<T4> forth, IResult<T5> fifth)
-        {
-            var results = new IResult[] { first, second, third };
-            if (results.All(x => x.IsSuccess))
-                return Result.Success((first.ItemOrDefault, second.ItemOrDefault, third.ItemOrDefault, forth.ItemOrDefault, fifth.ItemOrDefault));
-
-            var errors = results.SelectMany(x => x.Errors);
-            return Result.Failure<(T1, T2, T3, T4, T5)>(errors.ToArray());
-        }
-
         public static ResultComputation<T1, T2, T3, T4, T5> Create<T1, T2, T3, T4, T5>(IResult<T1> first, IResult<T2> second, IResult<T3> third, IResult<T4> forth, IResult<T5> fifth)
-            => new ResultComputation<T1, T2, T3, T4, T5>(Combine(first, second, third, forth, fifth));
+            => new ResultComputation<T1, T2, T3, T4, T5>(first, second, third, forth, fifth);
     }
 }
