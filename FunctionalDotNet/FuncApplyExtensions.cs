@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using static FunctionalDotNet.Result;
 
 namespace FunctionalDotNet
@@ -13,6 +14,10 @@ namespace FunctionalDotNet
         public static IResult<T2> Apply<T1, T2>(this Func<IResult<T1>, IResult<T2>> source, T1 t1) => source(Success(t1));
         public static IResult Apply<T1>(this Func<IResult<T1>, IResult> source, T1 t1) => source(Success(t1));
 
+        //TODO apply async for all other params
+        public static Task<IResult> ApplyAsync<T1>(this Func<IResult<T1>, Task<IResult>> source, T1 rt1) => source(Success(rt1));
+        public static Task<IResult> ApplyAsync<T1>(this Func<IResult<T1>, Task<IResult>> source, IResult<T1> rt1) => source(rt1);
+
         //2
         public static Func<IResult<T2>, IResult> Apply<T1, T2>(
             this Func<IResult<T1>, IResult<T2>, IResult> source, IResult<T1> rt1) =>
@@ -24,6 +29,10 @@ namespace FunctionalDotNet
 
         public static Func<IResult<T2>, IResult> Apply<T1, T2>(
             this Func<IResult<T1>, IResult<T2>, IResult> source, T1 rt1) =>
+            rt2 => source(Success(rt1), rt2);
+
+        public static Func<IResult<T2>, Task<IResult>> ApplyAsync<T1, T2>(
+            this Func<IResult<T1>, IResult<T2>, Task<IResult>> source, T1 rt1) =>
             rt2 => source(Success(rt1), rt2);
 
         public static Func<IResult<T2>, IResult<T3>> Apply<T1, T2, T3>(

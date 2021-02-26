@@ -56,8 +56,12 @@ namespace FunctionalDotNet
         //----------------
         private static IResult<T2> Binder<T1, T2>(IResult<T1> rt1, Func<T1, IResult<T2>> func) =>
             rt1.IsSuccess ? func(rt1.ItemOrDefault) : Failure<T2>(rt1.Errors);
+        private static async Task<IResult<T2>> BinderAsync<T1, T2>(IResult<T1> rt1, Func<T1, Task<IResult<T2>>> func) =>
+            rt1.IsSuccess ? await func(rt1.ItemOrDefault) : Failure<T2>(rt1.Errors);
         private static IResult Binder<T1>(IResult<T1> rt1, Func<T1, IResult> func) =>
             rt1.IsSuccess ? func(rt1.ItemOrDefault) : Failure(rt1.Errors);
+        private static async Task<IResult> BinderAsync<T1>(IResult<T1> rt1, Func<T1, Task<IResult>> func) =>
+            rt1.IsSuccess ? await func(rt1.ItemOrDefault) : Failure(rt1.Errors);
 
         // Convenience ctors
         public static IResult<T> Success<T>(T item) => Result<T>.Success(item);
@@ -110,6 +114,10 @@ namespace FunctionalDotNet
         //2
         public static Func<IResult<T1>, IResult<T2>, IResult<T3>> Lift<T1, T2, T3>(Func<T1, T2, T3> func) =>
             (rt1, rt2) => Binder(Merge(rt1, rt2), x => Success(func(x.Item1, x.Item2)));
+        
+        //TODO more params
+        public static Func<IResult<T1>, IResult<T2>, Task<IResult<T3>>> LiftAsync<T1, T2, T3>(Func<T1, T2, Task<T3>> func) =>
+            (rt1, rt2) => BinderAsync(Merge(rt1, rt2), async x => Success(await func(x.Item1, x.Item2)));
         //3
         public static Func<IResult<T1>, IResult<T2>, IResult<T3>, IResult<T4>> Lift<T1, T2, T3, T4>(Func<T1, T2, T3, T4> func) =>
             (rt1, rt2, rt3) => Binder(Merge(rt1, rt2, rt3), x => Success(func(x.Item1, x.Item2, x.Item3)));
@@ -131,11 +139,20 @@ namespace FunctionalDotNet
             rt1 => Binder(rt1, func);
         public static Func<IResult<T1>, IResult> Lift<T1>(Func<T1, IResult> func) =>
             rt1 => Binder(rt1, func);
+        //TODO more params
+        public static Func<IResult<T1>, Task<IResult>> LiftAsync<T1>(Func<T1, Task<IResult>> func) =>
+            (rt1) => BinderAsync(rt1, func);
+        public static Func<IResult<T1>, Task<IResult<T2>>> LiftAsync<T1, T2>(Func<T1, Task<IResult<T2>>> func) =>
+            (rt1) => BinderAsync(rt1, func);
         //2
         public static Func<IResult<T1>, IResult<T2>, IResult<T3>> Lift<T1, T2, T3>(Func<T1, T2, IResult<T3>> func) => 
             (rt1, rt2) => Binder(Merge(rt1, rt2), x => func(x.Item1, x.Item2));
         public static Func<IResult<T1>, IResult<T2>, IResult> Lift<T1, T2>(Func<T1, T2, IResult> func) =>
             (rt1, rt2) => Binder(Merge(rt1, rt2), x => func(x.Item1, x.Item2));
+        public static Func<IResult<T1>, IResult<T2>, Task<IResult>> LiftAsync<T1, T2>(Func<T1, T2, Task<IResult>> func) =>
+            (rt1, rt2) => BinderAsync(Merge(rt1, rt2), async x => await func(x.Item1, x.Item2));
+        public static Func<IResult<T1>, IResult<T2>, Task<IResult<T3>>> LiftAsync<T1, T2, T3>(Func<T1, T2, Task<IResult<T3>>> func) =>
+            (rt1, rt2) => BinderAsync(Merge(rt1, rt2), async x => await func(x.Item1, x.Item2));
         //3
         public static Func<IResult<T1>, IResult<T2>, IResult<T3>, IResult<T4>> Lift<T1, T2, T3, T4>(Func<T1, T2, T3, IResult<T4>> func) =>
             (rt1, rt2, rt3) => Binder(Merge(rt1, rt2, rt3), x => func(x.Item1, x.Item2, x.Item3));
