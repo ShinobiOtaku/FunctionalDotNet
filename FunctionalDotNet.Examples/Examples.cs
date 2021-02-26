@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net.Cache;
 using System.Threading.Tasks;
 
 namespace FunctionalDotNet.Examples
@@ -19,6 +21,12 @@ namespace FunctionalDotNet.Examples
         public static IResult<string> TryReadLine() => Result.Success("1");
         public static IResult TryWriteLine(string line) => Result.Success();
         public static async Task<IResult> TryWriteLineAsync(string line) => Result.Success();
+    }
+
+    public static class S3Bucket
+    {
+        public static object GetObject(string key) => "1";
+        public static string PutObject(string key, object contents) => "1";
     }
 
     public class FileContentsReporter
@@ -63,6 +71,24 @@ namespace FunctionalDotNet.Examples
                 numbersToDivide.Select(i => Calculator.TryDivide(10, i));
 
             IResult<IEnumerable<int>> combined = results.Sequence();
+        }
+
+        public static void Lift()
+        {
+            var readIntFromS3 = Result
+                .Lift<string, object>(S3Bucket.GetObject)
+                .Map(Convert.ToInt32);
+
+            IResult<int> result1 = readIntFromS3(Result.Success("key1"));
+        }
+
+        public static void Apply()
+        {
+            var divideByTwo = Result
+                .Lift<int, int, int>(Calculator.TryDivide)
+                .Apply(2);
+
+            IResult<int> five = divideByTwo(Result.Success(10));
         }
     }
 }
