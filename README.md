@@ -28,7 +28,7 @@ Result.Failure<int>("It went wrong!")
 Result.Failure("It went so wrong", "really wrong", "no seriously, so bad!")
 ```
 
-### Chaining functions with Map
+### Chaining functions with Map & Apply
 
 If the functions do not return `Result` use `Map(next_function)`.
 
@@ -54,7 +54,7 @@ IResult<int> four = value
 four.Bind(i => CsvFile.TryWriteLine($"The answer is: {i}"));
 ```
 
-### Chaining async functions with Bind
+### Chaining async functions
 
 ```csharp
 var value = Result.Success(1);
@@ -68,7 +68,7 @@ await four.BindAsync(i => CsvFile.TryWriteLineAsync($"The answer is: {i}"));
 
 ### Combine
 
-Combines two or more `Result` in order to chain them, useful for functions that require multiple parameters.
+Combines two or more `Result` in order to chain them, useful for chaining into functions that require multiple parameters.
 
 ```csharp
 var value1 = Result.Success(1);
@@ -96,6 +96,8 @@ IResult<IEnumerable<int>> combined = results.Sequence();
 
 Turns a normal function into one that accepts and returns `Result`s, allowing you to map etc.
 
+* note: you must specify the types the function takes and returns. *
+
 ```csharp
 var readIntFromS3 = Result
     .Lift<string, object>(S3Bucket.GetObject)
@@ -106,7 +108,7 @@ IResult<int> result1 = readIntFromS3(Result.Success("key1"));
 
 ### Apply
 
-Applies a single value to the function, returning a new function with one less parameter.
+Applies a single value to a lifted function, returning a new function with fewer parameters.
 
 ```csharp
 var divideByTwo = Result

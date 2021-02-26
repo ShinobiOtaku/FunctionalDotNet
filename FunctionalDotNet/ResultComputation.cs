@@ -6,6 +6,8 @@ using static FunctionalDotNet.Result;
 
 namespace FunctionalDotNet
 {
+    //TODO: combine again to add more results
+
     public class ResultComputation<T1, T2> : IResult
     {
         private readonly IResult<T1> _fst;

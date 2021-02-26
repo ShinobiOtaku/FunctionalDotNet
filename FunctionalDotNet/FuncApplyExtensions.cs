@@ -3,6 +3,8 @@ using static FunctionalDotNet.Result;
 
 namespace FunctionalDotNet
 {
+    //TODO: apply multiple at once
+
     public static class FuncApplyExtensions
     {
         //1
