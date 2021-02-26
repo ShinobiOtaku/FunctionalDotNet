@@ -23,11 +23,11 @@ namespace FunctionalDotNet
         public IEnumerable<string> Errors => _fst.Errors.Concat(_snd.Errors).Concat(_trd.Errors);
         public IResult Bind(Func<T1, T2, T3, IResult> f) => Lift(f).Apply(_fst).Apply(_snd).Apply(_trd);
         public Task<IResult> BindAsync(Func<T1, T2, T3, Task<IResult>> f) => 
-            Lift(f).Apply(_fst).Apply(_snd).Apply(_trd).FlipAsync().IgnoreAsync();
+            LiftAsync(f).ApplyAsync(_fst).ApplyAsync(_snd).ApplyAsync(_trd);
         public IResult<T4> Bind<T4>(Func<T1, T2, T3, IResult<T4>> f) =>
             Lift(f).Apply(_fst).Apply(_snd).Apply(_trd);
         public Task<IResult<T4>> BindAsync<T4>(Func<T1, T2, T3, Task<IResult<T4>>> f) =>
-            Lift(f).Apply(_fst).Apply(_snd).Apply(_trd).FlipAsync().FlattenAsync();
+            LiftAsync(f).ApplyAsync(_fst).ApplyAsync(_snd).ApplyAsync(_trd);
         public IResult<T4> Map<T4>(Func<T1, T2, T3, T4> f) =>
             Lift(f).Apply(_fst).Apply(_snd).Apply(_trd);
         public Task<IResult<T4>> MapAsync<T4>(Func<T1, T2, T3, Task<T4>> f) =>

@@ -2,6 +2,7 @@
 
 namespace FunctionalDotNet
 {
+    //TODO: can this go?
     public static class IgnoreEx
     {
         public static IResult Ignore<T1>(this IResult<T1> s) => s.IsSuccess ? Result.Success() : Result.Failure<T1>(s.Errors);
