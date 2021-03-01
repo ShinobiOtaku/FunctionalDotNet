@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 
 namespace FunctionalDotNet
@@ -25,6 +26,14 @@ namespace FunctionalDotNet
             return await result;
         }
 
+        // AsyncFunc<T, Result> -> AsyncResult
+        public static async Task<IResult> BindAsync<T1>(this Task<IResult<T1>> source, Func<T1, IResult> f) => 
+            (await source).Bind(f);
+
+        // AsyncFunc<T, Result<T>> -> AsyncResult<T>
+        public static async Task<IResult<T2>> BindAsync<T1, T2>(this Task<IResult<T1>> source, Func<T1, IResult<T2>> f) =>
+            (await source).Bind(f);
+
         // Func<T, Result> -> Func<Result, Result>
         public static async Task<IResult> BindAsync<T1>(this Task<IResult<T1>> source, Func<T1, Task<IResult>> f)
         {
@@ -43,10 +52,7 @@ namespace FunctionalDotNet
         }
 
         // Func<T, Result> -> Func<Result, Result>
-        public static async Task<IResult<T2>> BindAsync<T1, T2>(this Task<IResult<T1>> source, Func<T1, Task<IResult<T2>>> f)
-        {
-            var r = await source;
-            return await r.BindAsync(f);
-        }
+        public static async Task<IResult<T2>> BindAsync<T1, T2>(this Task<IResult<T1>> source, Func<T1, Task<IResult<T2>>> f) => 
+            await (await source).BindAsync(f);
     }
 }

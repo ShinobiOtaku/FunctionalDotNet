@@ -19,13 +19,7 @@ namespace FunctionalDotNet.Examples
     public class S3Object
     {
         public string Content { get; }
-        public S3Key Key { get; }
-
-        public S3Object(S3Key key, string content)
-        {
-            Key = key;
-            Content = content;
-        }
+        public S3Object(string content) => Content = content;
     }
 
     /// ------
@@ -50,7 +44,7 @@ namespace FunctionalDotNet.Examples
                 using var reader = new StreamReader(responseStream);
 
                 var responseBody = await reader.ReadToEndAsync();
-                var result = new S3Object(key, responseBody);
+                var result = new S3Object(responseBody);
 
                 return Result.Success(result);
             }
@@ -65,14 +59,14 @@ namespace FunctionalDotNet.Examples
             }
         }
 
-        public async Task<IResult> PutS3ObjectAsync(S3Object obj)
+        public async Task<IResult> PutS3ObjectAsync(S3Object obj, S3Key s3Key)
         {
             try
             {
                 var putRequest = new PutObjectRequest
                 {
                     BucketName = BucketName,
-                    Key = obj.Key.Value,
+                    Key = s3Key.Value,
                     ContentBody = obj.Content
                 };
 
@@ -104,9 +98,9 @@ namespace FunctionalDotNet.Examples
             // Take two inputs, the old key and the new key
             var pipeline = Result
                 .LiftAsync<S3Key, S3Object>(_s3.GetS3ObjectAsync)
-                .MapAsync(old => new S3Object(old.Key, old.Content.ToLower()))
-                .BindAsync<S3Key, S3Object, S3Key>((a, b) => _s3.PutS3ObjectAsync(a));
-
+                .MapAsync(oldFile => new S3Object(oldFile.Content.ToLower()))
+                .BindAsync((S3Object newFile, S3Key newKey) => _s3.PutS3ObjectAsync(newFile, newKey));
+            
             // Define the old and new keys
             var keyPairs = new[] {"key1", "key2"}
                 .Select(k => new { OldKey = new S3Key(k), NewKey = new S3Key(k + "_lower")});
