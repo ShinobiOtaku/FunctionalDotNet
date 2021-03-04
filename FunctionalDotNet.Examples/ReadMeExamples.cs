@@ -72,7 +72,7 @@ namespace FunctionalDotNet.Examples
             IResult<IEnumerable<int>> combined = results.Sequence();
         }
 
-        public static void Lift()
+        public static void Lift1()
         {
             var readIntFromS3 = Result
                 .Lift<string, object>(S3Bucket.GetObject)
@@ -81,13 +81,33 @@ namespace FunctionalDotNet.Examples
             IResult<int> result1 = readIntFromS3(Result.Success("key1"));
         }
 
+        public static void Lift2()
+        {
+            var readIntFromS3 = Result
+                .Lift((string key) =>  S3Bucket.GetObject(key))
+                .Map(Convert.ToInt32);
+
+            IResult<int> result1 = readIntFromS3(Result.Success("key1"));
+        }
+
         public static void Apply()
         {
             var divideByTwo = Result
-                .Lift<int, int, int>(Calculator.TryDivide)
+                .Lift((int a, int b) => Calculator.TryDivide(a, b))
                 .Apply(2);
 
             IResult<int> five = divideByTwo(Result.Success(10));
+        }
+
+        public static void CapturingParams()
+        {
+            // A function which takes 2 parameters
+            var addOneDivideByX = Result
+                .Lift((int a) => Calculator.AddOne(a))
+                .Map((int resultOfPrevious, int x) => Calculator.TryDivide(resultOfPrevious, x));// x is captured
+
+            // partially apply the function, returning a new function which takes just one parameter.
+            var divideTenByX = addOneDivideByX.Apply(10);
         }
     }
 }

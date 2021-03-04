@@ -39,7 +39,7 @@ namespace CodeGen
 
         static void Main(string[] args)
         {
-            Bind();
+            Map();
         }
 
         private static void ResultComputation()
@@ -230,11 +230,12 @@ namespace CodeGen
                 w.WriteLine($"// ------------------------");
                 w.WriteLine($"// {i - 1} parameter functions.");
                 w.WriteLine($"// ------------------------");
+                w.WriteLine();
 
                 //public static Func<IResult<T1>, IResult> Map<T1, T2>(
                 //  this Func<IResult<T1>, IResult<T2>> source, Func<T2, IResult> f) =>
                 //  rt1 => source(rt1).Map(f);
-                w.WriteLine($"/// Chains the previous function to another function using Map.");
+                w.WriteLine($"/// Chains the previous function to another function.");
                 w.WriteLine($"public static Func<{IResultT(1, i - 1)}, IResult> Map<{Ts(1, i)}>(");
                 w.WriteLine($"{Tab}this Func<{IResultT(1, i)}> source, Action<T{i}> f) =>");
                 w.WriteLine($"{Tab}({Rts(1, i - 1)}) => source({Rts(1, i - 1)}).Map(f);");
@@ -243,7 +244,7 @@ namespace CodeGen
                 //public static Func<IResult<T1>, IResult<T3>> Map<T1, T2, T3>(
                 //  this Func<IResult<T1>, IResult<T2>> source, Func<T2, IResult<T3>> f) =>
                 //  rt1 => source(rt1).Map(f);
-                w.WriteLine($"/// Chains the previous function to another function using Map.");
+                w.WriteLine($"/// Chains the previous function to another function.");
                 w.WriteLine($"public static Func<{IResultT(1, i - 1)}, {IResultT(i + 1, 1)}> Map<{Ts(1, i + 1)}>(");
                 w.WriteLine($"{Tab}this Func<{IResultT(1, i)}> source, Func<T{i}, T{i + 1}> f) =>");
                 w.WriteLine($"{Tab}({Rts(1, i - 1)}) => source({Rts(1, i - 1)}).Map(f);");
@@ -252,7 +253,7 @@ namespace CodeGen
                 //public static Func<IResult<T1>, Task<IResult>> MapAsync<T1, T2>(
                 //  this Func<IResult<T1>, IResult<T2>> source, Func<T2, Task<IResult>> f) =>
                 //  rt1 => source(rt1).MapAsync(f);
-                w.WriteLine($"/// Chains the previous function to an async function using Map.");
+                w.WriteLine($"/// Chains the previous function to an async function.");
                 w.WriteLine($"public static Func<{IResultT(1, i - 1)}, Task<IResult>> MapAsync<{Ts(1, i)}>(");
                 w.WriteLine($"{Tab}this Func<{IResultT(1, i)}> source, Func<T{i}, Task> f) =>");
                 w.WriteLine($"{Tab}({Rts(1, i - 1)}) => source({Rts(1, i - 1)}).MapAsync(f);");
@@ -261,7 +262,7 @@ namespace CodeGen
                 //public static Func<IResult<T1>, Task<IResult<T3>>> MapAsync<T1, T2, T3>(
                 //  this Func<IResult<T1>, IResult<T2>> source, Func<T2, Task<IResult<T3>>> f) =>
                 //  rt1 => source(rt1).MapAsync(f);
-                w.WriteLine($"/// Chains the previous function to an async function using Map.");
+                w.WriteLine($"/// Chains the previous function to an async function.");
                 w.WriteLine($"public static Func<{IResultT(1, i - 1)}, Task<{IResultT(i + 1, 1)}>> MapAsync<{Ts(1, i + 1)}>(");
                 w.WriteLine($"{Tab}this Func<{IResultT(1, i)}> source, Func<T{i}, Task<T{i + 1}>> f) =>");
                 w.WriteLine($"{Tab}({Rts(1, i - 1)}) => source({Rts(1, i - 1)}).MapAsync(f);");
@@ -270,7 +271,7 @@ namespace CodeGen
                 //public static Func<IResult<T1>, Task<IResult>> MapAsync<T1, T2>(
                 //  this Func<IResult<T1>, Task<IResult<T2>>> source, Func<T2, IResult> f) =>
                 //  rt1 => source(rt1).MapAsync(f);
-                w.WriteLine($"/// Chains the previous async function to another async function using Map.");
+                w.WriteLine($"/// Chains the previous async function to another async function.");
                 w.WriteLine($"public static Func<{IResultT(1, i - 1)}, Task<{IResultT(i + 1, 1)}>> MapAsync<{Ts(1, i + 1)}>(");
                 w.WriteLine($"{Tab}this Func<{IResultT(1, i - 1)}, Task<{IResultT(i, 1)}>> source, Func<T{i}, Task<T{i + 1}>> f) =>");
                 w.WriteLine($"{Tab}({Rts(1, i - 1)}) => source({Rts(1, i - 1)}).MapAsync(f);");
@@ -279,7 +280,7 @@ namespace CodeGen
                 //public static Func<IResult<T1>, Task<IResult>> MapAsync<T1, T2>(
                 //  this Func<IResult<T1>, Task<IResult<T2>>> source, Func<T2, IResult> f) =>
                 //  rt1 => source(rt1).MapAsync(f);
-                w.WriteLine($"/// Chains the previous async function to another async function using Map.");
+                w.WriteLine($"/// Chains the previous async function to another async function.");
                 w.WriteLine($"public static Func<{IResultT(1, i - 1)}, Task<IResult>> MapAsync<{Ts(1, i)}>(");
                 w.WriteLine($"{Tab}this Func<{IResultT(1, i - 1)}, Task<{IResultT(i, 1)}>> source, Func<T{i}, Task> f) =>");
                 w.WriteLine($"{Tab}({Rts(1, i - 1)}) => source({Rts(1, i - 1)}).MapAsync(f);");
@@ -288,7 +289,7 @@ namespace CodeGen
                 //public static Func<IResult<T1>, Task<IResult>> MapAsync<T1, T2>(
                 //  this Func<IResult<T1>, Task<IResult<T2>>> source, Func<T2, IResult> f) =>
                 //  rt1 => source(rt1).MapAsync(f);
-                w.WriteLine($"/// Chains the previous async function to another function using Map.");
+                w.WriteLine($"/// Chains the previous async function to another function.");
                 w.WriteLine($"public static Func<{IResultT(1, i - 1)}, Task<{IResultT(i + 1, 1)}>> MapAsync<{Ts(1, i + 1)}>(");
                 w.WriteLine($"{Tab}this Func<{IResultT(1, i - 1)}, Task<{IResultT(i, 1)}>> source, Func<T{i}, T{i + 1}> f) =>");
                 w.WriteLine($"{Tab}({Rts(1, i - 1)}) => source({Rts(1, i - 1)}).MapAsync(f);");
@@ -297,11 +298,73 @@ namespace CodeGen
                 //public static Func<IResult<T1>, Task<IResult>> MapAsync<T1, T2>(
                 //  this Func<IResult<T1>, Task<IResult<T2>>> source, Func<T2, IResult> f) =>
                 //  rt1 => source(rt1).MapAsync(f);
-                w.WriteLine($"/// Chains the previous async function to another function using Map.");
+                w.WriteLine($"/// Chains the previous async function to another function.");
                 w.WriteLine($"public static Func<{IResultT(1, i - 1)}, Task<IResult>> MapAsync<{Ts(1, i)}>(");
                 w.WriteLine($"{Tab}this Func<{IResultT(1, i - 1)}, Task<{IResultT(i, 1)}>> source, Action<T{i}> f) =>");
                 w.WriteLine($"{Tab}({Rts(1, i - 1)}) => source({Rts(1, i - 1)}).MapAsync(f);");
                 w.WriteLine();
+
+                for (var j = 1; j <= InnerNumber; j++)
+                {
+                    w.WriteLine($"// ------------------------");
+                    w.WriteLine($"// {i - 1} parameter functions. Capturing {j} additional parameters.");
+                    w.WriteLine($"// ------------------------");
+                    w.WriteLine();
+
+                    //public static Func<IResult<T1>, IResult<TInner1>, IResult> Map<T1, T2, TInner1>(
+                    //  this Func<IResult<T1>, IResult<T2>> source, Action<T2, TInner1> f) =>
+                    //  (rt1, rt2) => source(rt1).Bind(x => Result.Lift(f).Apply(x).Apply(rt2));
+                    w.WriteLine($"/// Chains the previous function to another function with {j} additional parameters.");
+                    w.WriteLine($"public static Func<{IResultT(1, i - 1)}, {IResultTInner(1, j)}, IResult> Map<{Ts(1, i)}, {TInners(1, j)}>(");
+                    w.WriteLine($"{Tab}this Func<{IResultT(1, i - 1)}, {IResultT(i, 1)}> source, Action<T{i}, {TInners(1, j)}> f) =>");
+                    w.WriteLine($"{Tab}({Rts(1, i - 1)}, {Rts(i, j)}) => source({Rts(1, i - 1)}).Bind(x => Result.Lift(f).Apply(x){ApplyRts(i, j)});");
+                    w.WriteLine();
+
+                    //public static Func<IResult<T1>, IResult<TInner1>, IResult<T3>> Map<T1, T2, T3, TInner1>(
+                    //  this Func<IResult<T1>, IResult<T2>> source, Func<T2, TInner1, T3> f) =>
+                    //  (rt1, rt2) => source(rt1).Bind(x => Result.Lift(f).Apply(x).Apply(rt2));
+                    w.WriteLine($"/// Chains the previous function to another function with {j} additional parameters.");
+                    w.WriteLine($"public static Func<{IResultT(1, i - 1)}, {IResultTInner(1, j)}, IResult<T{i + 1}>> Map<{Ts(1, i + 1)}, {TInners(1, j)}>(");
+                    w.WriteLine($"{Tab}this Func<{IResultT(1, i - 1)}, {IResultT(i, 1)}> source, Func<T{i}, {TInners(1, j)}, T{i + 1}> f) =>");
+                    w.WriteLine($"{Tab}({Rts(1, i - 1)}, {Rts(i, j)}) => source({Rts(1, i - 1)}).Bind(x => Result.Lift(f).Apply(x){ApplyRts(i, j)});");
+                    w.WriteLine();
+
+                    //public static Func<IResult<T1>, IResult<TInner1>, Task<IResult>> MapAsync<T1, T2, TInner1>(
+                    //  this Func<IResult<T1>, Task<IResult<T2>>> source, Action<T2, TInner1> f) =>
+                    //  (rt1, rt2) => source(rt1).BindAsync(x => Result.Lift(f).Apply(x).Apply(rt2));
+                    w.WriteLine($"/// Chains the previous async function to another function with {j} additional parameters.");
+                    w.WriteLine($"public static Func<{IResultT(1, i - 1)}, {IResultTInner(1, j)}, Task<IResult>> MapAsync<{Ts(1, i)}, {TInners(1, j)}>(");
+                    w.WriteLine($"{Tab}this Func<{IResultT(1, i - 1)}, Task<{IResultT(i, 1)}>> source, Action<T{i}, {TInners(1, j)}> f) =>");
+                    w.WriteLine($"{Tab}({Rts(1, i - 1)}, {Rts(i, j)}) => source({Rts(1, i - 1)}).BindAsync(x => Result.Lift(f).Apply(x){ApplyRts(i, j)});");
+                    w.WriteLine();
+
+                    //public static Func<IResult<T1>, IResult<TInner1>, Task<IResult<T3>>> MapAsync<T1, T2, T3, TInner1>(
+                    //  this Func<IResult<T1>, Task<IResult<T2>>> source, Func<T2, TInner1, T3> f) =>
+                    //  (rt1, rt2) => source(rt1).BindAsync(x => Result.Lift(f).Apply(x).Apply(rt2));
+                    w.WriteLine($"/// Chains the previous async function to another function with {j} additional parameters.");
+                    w.WriteLine($"public static Func<{IResultT(1, i - 1)}, {IResultTInner(1, j)}, Task<IResult<T{i + 1}>>> MapAsync<{Ts(1, i + 1)}, {TInners(1, j)}>(");
+                    w.WriteLine($"{Tab}this Func<{IResultT(1, i - 1)}, Task<{IResultT(i, 1)}>> source, Func<T{i}, {TInners(1, j)}, T{i + 1}> f) =>");
+                    w.WriteLine($"{Tab}({Rts(1, i - 1)}, {Rts(i, j)}) => source({Rts(1, i - 1)}).BindAsync(x => Result.Lift(f).Apply(x){ApplyRts(i, j)});");
+                    w.WriteLine();
+
+                    //public static Func<IResult<T1>, IResult<TInner1>, Task<IResult>> MapAsync<T1, T2, TInner1>(
+                    //  this Func<IResult<T1>, Task<IResult<T2>>> source, Func<T2, TInner1, Task> f) =>
+                    //  (rt1, rt2) => source(rt1).BindAsync(x => Result.LiftAsync(f).ApplyAsync(x).ApplyAsync(rt2));
+                    w.WriteLine($"/// Chains the previous async function to another async function with {j} additional parameters.");
+                    w.WriteLine($"public static Func<{IResultT(1, i - 1)}, {IResultTInner(1, j)}, Task<IResult>> MapAsync<{Ts(1, i)}, {TInners(1, j)}>(");
+                    w.WriteLine($"{Tab}this Func<{IResultT(1, i - 1)}, Task<{IResultT(i, 1)}>> source, Func<T{i}, {TInners(1, j)}, Task> f) =>");
+                    w.WriteLine($"{Tab}({Rts(1, i - 1)}, {Rts(i, j)}) => source({Rts(1, i - 1)}).BindAsync(x => Result.LiftAsync(f).ApplyAsync(x){ApplyRtsAsync(i, j)});");
+                    w.WriteLine();
+
+                    //public static Func<IResult<T1>, IResult<TInner1>, Task<IResult<T3>>> MapAsync<T1, T2, T3, TInner1>(
+                    //  this Func<IResult<T1>, Task<IResult<T2>>> source, Func<T2, TInner1, Task<T3>> f) =>
+                    //  (rt1, rt2) => source(rt1).BindAsync(x => Result.LiftAsync(f).ApplyAsync(x).ApplyAsync(rt2));
+                    w.WriteLine($"/// Chains the previous async function to another async function with {j} additional parameters.");
+                    w.WriteLine($"public static Func<{IResultT(1, i - 1)}, {IResultTInner(1, j)}, Task<IResult<T{i + 1}>>> MapAsync<{Ts(1, i + 1)}, {TInners(1, j)}>(");
+                    w.WriteLine($"{Tab}this Func<{IResultT(1, i - 1)}, Task<{IResultT(i, 1)}>> source, Func<T{i}, {TInners(1, j)}, Task<T{i + 1}>> f) =>");
+                    w.WriteLine($"{Tab}({Rts(1, i - 1)}, {Rts(i, j)}) => source({Rts(1, i - 1)}).BindAsync(x => Result.LiftAsync(f).ApplyAsync(x){ApplyRtsAsync(i, j)});");
+                    w.WriteLine();
+                }
             }
 
             w.SaveToFile("Map.cs");
@@ -316,6 +379,7 @@ namespace CodeGen
                 w.WriteLine($"// ------------------------");
                 w.WriteLine($"// {i - 1} parameter functions.");
                 w.WriteLine($"// ------------------------");
+                w.WriteLine();
 
                 //public static Func<IResult<T1>, IResult> Bind<T1, T2>(
                 //  this Func<IResult<T1>, IResult<T2>> source, Func<T2, IResult> f) =>
@@ -376,6 +440,25 @@ namespace CodeGen
                     w.WriteLine($"// ------------------------");
                     w.WriteLine($"// {i - 1} parameter functions. Capturing {j} additional parameters.");
                     w.WriteLine($"// ------------------------");
+                    w.WriteLine();
+
+                    //public static Func<IResult<T1>, IResult<TInner1>, IResult> Bind<T1, T2, TInner1>(
+                    //  this Func<IResult<T1>, IResult<T2>> source, Func<T2, TInner1, IResult> f) =>
+                    //  (rt1, rt2) => source(rt1).Bind(x => Result.Lift(f).Apply(x).Apply(rt2));
+                    w.WriteLine($"/// Chains the previous function to another function with {j} additional parameters.");
+                    w.WriteLine($"public static Func<{IResultT(1, i - 1)}, {IResultTInner(1, j)}, IResult> Bind<{Ts(1, i)}, {TInners(1, j)}>(");
+                    w.WriteLine($"{Tab}this Func<{IResultT(1, i - 1)}, {IResultT(i, 1)}> source, Func<T{i}, {TInners(1, j)}, IResult> f) =>");
+                    w.WriteLine($"{Tab}({Rts(1, i - 1)}, {Rts(i, j)}) => source({Rts(1, i - 1)}).Bind(x => Result.Lift(f).Apply(x){ApplyRts(i, j)});");
+                    w.WriteLine();
+
+                    //public static Func<IResult<T1>, IResult<TInner1>, IResult<T3>> Bind<T1, T2, T3, TInner1>(
+                    //  this Func<IResult<T1>, IResult<T2>> source, Func<T2, TInner1, IResult<T3>> f) =>
+                    //  (rt1, rt2) => source(rt1).Bind(x => Result.Lift(f).Apply(x).Apply(rt2));
+                    w.WriteLine($"/// Chains the previous function to another function with {j} additional parameters.");
+                    w.WriteLine($"public static Func<{IResultT(1, i - 1)}, {IResultTInner(1, j)}, IResult<T{i + 1}>> Bind<{Ts(1, i + 1)}, {TInners(1, j)}>(");
+                    w.WriteLine($"{Tab}this Func<{IResultT(1, i - 1)}, {IResultT(i, 1)}> source, Func<T{i}, {TInners(1, j)}, IResult<T{i + 1}>> f) =>");
+                    w.WriteLine($"{Tab}({Rts(1, i - 1)}, {Rts(i, j)}) => source({Rts(1, i - 1)}).Bind(x => Result.Lift(f).Apply(x){ApplyRts(i, j)});");
+                    w.WriteLine();
 
                     //public static Func<IResult<T1>, IResult<TInner1>, Task<IResult>> BindAsync<T1, T2, TInner1>(
                     //  this Func<IResult<T1>, Task<IResult<T2>>> source, Func<T2, TInner1, IResult> f) =>
